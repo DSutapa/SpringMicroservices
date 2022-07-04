@@ -12,8 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/users")
-@EnableDiscoveryClient
-@EnableEurekaClient
 public class UserController {
     @Autowired
     private UserService userService;

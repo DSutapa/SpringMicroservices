@@ -28,7 +28,14 @@ public class DepartmentService {
     public Department getDepartment(long departmentId) {
         boolean exists = departmentRepository.existsById(departmentId);
         if(!exists){
-            throw new IllegalStateException("Department Id "+departmentId+" does not exists!");
+//       throw new IllegalStateException("Department Id "+departmentId+" does not exists!");
+            System.out.println("Department Id "+departmentId+" does not exists!");
+            Department nullDepartment = new Department();
+            nullDepartment.setDepartmentId(0);
+            nullDepartment.setDepartmentName("Not Found");
+            nullDepartment.setDepartmentAddress("Not Found");
+            nullDepartment.setDepartmentCode("Not Found");
+            return nullDepartment;
         }
         departmentRepository.findDepartmentBydepartmentId(departmentId);
         return departmentRepository.findDepartmentBydepartmentId(departmentId);

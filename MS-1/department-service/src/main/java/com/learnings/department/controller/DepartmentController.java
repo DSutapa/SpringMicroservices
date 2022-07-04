@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/departments/")
-
 public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;

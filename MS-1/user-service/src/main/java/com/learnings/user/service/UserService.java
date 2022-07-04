@@ -16,23 +16,27 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private RestTemplate restTemplate;
 
     public List<Users> allUsers() {
         return userRepository.findAll();
     }
 
     public Users addUser(Users users) {
-//        ResponseEntity<Department> existsId= new RestTemplate().getForEntity("http://localhost:9000/api/" +users.getDepartmentId(),Department.class);
-//        if(existsId.toString().isEmpty()){
-//            throw new IllegalStateException("NO!");
-//        }
-        Optional<Users> findEmail = userRepository.findUsersByemail(users.getEmail());
-        if(findEmail.isPresent()){
-            throw new IllegalStateException("Email "+users.getEmail()+" already taken!");
-        }
-        userRepository.save(users);
-        return userRepository.save(users);
+        Department department = restTemplate.getForObject("http://DEPARTMENT-SERVICE/departments/"+users.getDepartmentId(),Department.class);
+                if(department.getDepartmentId()!= 0){
+                    Optional<Users> findEmail = userRepository.findUsersByemail(users.getEmail());
+                    if(findEmail.isPresent()){
+                        throw new IllegalStateException("Email "+users.getEmail()+" already taken!");
+                    }
+                    userRepository.save(users);
+                    return userRepository.save(users);
+        } else {
+                    System.out.println("Department Id "+users.getDepartmentId()+" does not exists!!");
+                }
+
+        return null;
     }
 
     public Users getUser(long userId) {
@@ -48,8 +52,10 @@ public class UserService {
 
         ResponseTemplateVO vo = new ResponseTemplateVO();
         Users user = userRepository.findUserByuserId(userId);
-        Department userWithDept= new RestTemplate().getForObject("http://DEPARTMENT-SERVICE/departments/"+user.getDepartmentId(),
-                                                            Department.class);
+        //Department userWithDept = new RestTemplate().getForObject("http://localhost:9000/departments/"+user.getDepartmentId(),Department.class);
+        //Department userWithDept= new RestTemplate().getForObject("http://DEPARTMENT-SERVICE/departments/"+user.getDepartmentId(),
+         //                                                  Department.class);
+        Department userWithDept = restTemplate.getForObject("http://DEPARTMENT-SERVICE/departments/"+user.getDepartmentId(),Department.class);
         vo.setUsers(user);
         vo.setDepartment(userWithDept);
        return vo;

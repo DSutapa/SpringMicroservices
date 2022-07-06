@@ -3,13 +3,14 @@ package com.learnings.user.controller;
 import com.learnings.user.VO.ResponseTemplateVO;
 import com.learnings.user.entity.Users;
 import com.learnings.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping(path="/users")
 public class UserController {
@@ -22,6 +23,7 @@ public class UserController {
     }
     @PostMapping(path="/addUser")
     public Users addUser(@RequestBody Users users){
+        log.info("Inside addUser of UserController");
         return userService.addUser(users);
     }
 //    @GetMapping(path="/{userId}")
@@ -31,7 +33,7 @@ public class UserController {
 
     @GetMapping(path="/{userId}")
     public ResponseTemplateVO getUserWithDepartment(@PathVariable ("userId") long userId){
-
+        log.info("Inside getUserWithDepartment of UserController");
         return userService.getUserWithDepartment(userId);
     }
 }

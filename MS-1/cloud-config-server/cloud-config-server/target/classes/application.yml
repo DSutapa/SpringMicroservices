@@ -1,0 +1,11 @@
+server:
+  port: 9193
+spring:
+  application:
+    name: CLOUD-CONFIG-SERVER
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/DSutapa/SpringMicroservices/
+          clone-on-start: true
